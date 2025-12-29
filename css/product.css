@@ -1,0 +1,242 @@
+/* Page intro */
+.page-header {
+  text-align: center;
+  padding: 3rem 1rem 1rem 1rem;
+  color: #4a7c59;
+}
+.page-header h1 {
+  font-size: 2.8rem;
+  margin-bottom: 0.5rem;
+  font-weight: 700;
+}
+.page-header p {
+  font-size: 1.15rem;
+  font-weight: 500;
+}
+
+/* Filter buttons */
+.filter-buttons {
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+  margin: 2rem 0;
+  flex-wrap: wrap;
+}
+.filter-btn {
+  background-color: #4a7c59;
+  color: white;
+  border: none;
+  padding: 0.6rem 1.4rem;
+  font-weight: 600;
+  border-radius: 6px;
+  cursor: pointer;
+  box-shadow: 0 4px 8px rgba(74, 124, 89, 0.3);
+  transition: background-color 0.3s ease, transform 0.2s ease;
+  user-select: none;
+}
+.filter-btn:hover,
+.filter-btn:focus {
+  background-color: #3a6244;
+  outline: none;
+  transform: translateY(-2px);
+}
+.filter-btn.active {
+  background-color: #2f4e39;
+  box-shadow: 0 6px 12px rgba(47, 78, 57, 0.5);
+}
+
+/* Products grid */
+.product-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit,minmax(280px,1fr));
+  gap: 2rem;
+  padding-bottom: 4rem;
+}
+.product-card {
+  background: #f9f9f9;
+  border-radius: 8px;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+  padding: 1rem;
+  display: flex;
+  flex-direction: column;
+  transition: transform 0.3s ease;
+  cursor: pointer;
+}
+.product-card:hover,
+.product-card:focus {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 20px rgba(74,124,89,0.3);
+  outline: none;
+}
+.product-card img {
+  border-radius: 8px;
+  height: 180px;
+  object-fit: cover;
+  width: 100%;
+  margin-bottom: 1rem;
+  user-select: none;
+}
+.product-card h3 {
+  margin: 0 0 0.5rem 0;
+  color: #3a6244;
+  font-weight: 600;
+}
+.product-card p {
+  flex-grow: 1;
+  margin: 0 0 1rem 0;
+  color: #666;
+  font-size: 0.95rem;
+}
+.product-card .price {
+  font-weight: 700;
+  color: #4a7c59;
+  margin-bottom: 1rem;
+}
+.product-card button {
+  background-color: #4a7c59;
+  color: white;
+  border: none;
+  padding: 0.65rem 1.2rem;
+  border-radius: 6px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+  user-select: none;
+}
+.product-card button:hover,
+.product-card button:focus {
+  background-color: #3a6244;
+  outline: none;
+  transform: translateY(-2px);
+}
+.product-card button:active {
+  background-color: #2f4e39;
+  transform: translateY(0);
+}
+/* Badges */
+.badges {
+  display: flex;
+  gap: 0.4rem;
+  margin-bottom: 0.4rem;
+}
+.badge {
+  background: rgba(74,124,89,0.15);
+  color: #3a6244;
+  padding: 0.2rem 0.6rem;
+  border-radius: 20px;
+  font-size: 0.7rem;
+  font-weight: 600;
+}
+
+/* Hover image swap */
+.image-wrap {
+  position: relative;
+  height: 180px;
+  overflow: hidden;
+  border-radius: 8px;
+}
+.image-wrap img {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: opacity 0.5s ease;
+}
+.img-back {
+  opacity: 0;
+}
+.product-card:hover .img-back {
+  opacity: 1;
+}
+.product-card:hover .img-front {
+  opacity: 0;
+}
+
+/* Micro info */
+.micro-info {
+  font-size: 0.75rem;
+  color: #777;
+  margin-bottom: 0.8rem;
+  display: block;
+}
+
+/* CTA */
+.quick-view-btn {
+  background: #4a7c59;
+  color: #fff;
+  border: none;
+  padding: 0.6rem;
+  border-radius: 6px;
+  font-weight: 600;
+}
+
+/* Empty state */
+.empty-state {
+  text-align: center;
+  padding: 3rem 1rem;
+  color: #777;
+}
+.modal {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.6);
+  display: none;
+  justify-content: center;
+  align-items: center;
+  z-index: 300;
+}
+.modal.show {
+  display: flex;
+}
+.modal-content {
+  background: #fff;
+  padding: 1.5rem;
+  max-width: 400px;
+  width: 90%;
+  border-radius: 12px;
+  position: relative;
+  animation: scaleIn 0.3s ease;
+}
+.modal-content img {
+  width: 100%;
+  border-radius: 8px;
+  margin-bottom: 1rem;
+}
+.close-modal {
+  position: absolute;
+  top: 10px;
+  right: 12px;
+  font-size: 1.5rem;
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+
+@keyframes scaleIn {
+  from { transform: scale(0.9); opacity: 0; }
+  to { transform: scale(1); opacity: 1; }
+}
+/* Search + Sort controls */
+.product-controls {
+  display: flex;
+  gap: 1rem;
+  margin: 2rem 0;
+  flex-wrap: wrap;
+}
+
+.product-controls input,
+.product-controls select {
+  padding: 0.6rem 0.8rem;
+  border-radius: 8px;
+  border: 1px solid rgba(0,0,0,0.15);
+  font-size: 0.9rem;
+  width: 100%;
+  max-width: 250px;
+}
+
+/* Mobile stacking */
+@media (max-width: 600px) {
+  .product-controls {
+    flex-direction: column;
+  }
+}
