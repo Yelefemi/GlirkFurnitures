@@ -43,11 +43,8 @@
     }
 
     /* Logo */
-    .logo {
-      font-size: 1.8rem;
-      font-weight: 700;
-      color: #4a7c59;
-      letter-spacing: 2px;
+    .logo img{
+      height: 70px ;
     }
 
     /* Navigation links */

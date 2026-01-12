@@ -1,117 +1,123 @@
-// Filter products by category - only for products page
-const filterButtons = document.querySelectorAll('.filter-btn');
-const productsGrid = document.getElementById('products-grid');
+document.addEventListener("DOMContentLoaded", () => {
 
-filterButtons.forEach(button => {
-  button.addEventListener('click', () => {
-    // Remove active from all buttons
-    filterButtons.forEach(btn => {
-      btn.classList.remove('active');
-      btn.setAttribute('aria-selected', 'false');
-    });
-    // Add active to clicked button
-    button.classList.add('active');
-    button.setAttribute('aria-selected', 'true');
+  /* =========================
+     SEARCH
+  ========================= */
+  const searchInput = document.getElementById("productSearch");
+  const emptyState = document.getElementById("emptyState");
+  const productCards = Array.from(document.querySelectorAll(".product-card"));
 
-    const filter = button.getAttribute('data-filter');
+  if (searchInput) {
+    searchInput.addEventListener("input", () => {
+      const query = searchInput.value.toLowerCase();
+      let visible = 0;
 
-    // Show/hide product cards
-    const products = productsGrid.querySelectorAll('.product-card');
-    products.forEach(product => {
-      if (filter === 'all' || product.dataset.category === filter) {
-        product.style.display = '';
-      } else {
-        product.style.display = 'none';
+      productCards.forEach(card => {
+        const name = card.dataset.name.toLowerCase();
+        const match = name.includes(query);
+        card.style.display = match ? "" : "none";
+        if (match) visible++;
+      });
+
+      if (emptyState) {
+        emptyState.hidden = visible !== 0;
       }
     });
-
-    // Move focus back to products grid for accessibility
-    productsGrid.focus();
-  });
-});
-// Quick View Modal
-const modal = document.getElementById('product-modal');
-const modalImg = document.getElementById('modal-img');
-const modalName = document.getElementById('modal-name');
-const modalDesc = document.getElementById('modal-desc');
-const modalInfo = document.getElementById('modal-info');
-const closeModal = document.querySelector('.close-modal');
-
-document.querySelectorAll('.quick-view-btn').forEach(btn => {
-  btn.addEventListener('click', e => {
-    const card = e.target.closest('.product-card');
-
-    modalImg.src = card.dataset.image;
-    modalName.textContent = card.dataset.name;
-    modalDesc.textContent = card.dataset.desc;
-    modalInfo.textContent =
-      `${card.dataset.material} · ${card.dataset.delivery}`;
-
-    modal.classList.add('show');
-  });
-});
-
-closeModal.addEventListener('click', () =>
-  modal.classList.remove('show')
-);
-
-modal.addEventListener('click', e => {
-  if (e.target === modal) modal.classList.remove('show');
-});
-const searchInput = document.getElementById('productSearch');
-const sortSelect = document.getElementById('productSort');
-const productGrid = document.getElementById('productGrid');
-let productCards = Array.from(
-  document.querySelectorAll('.product-card')
-);
-
-/* 🔍 SEARCH */
-searchInput.addEventListener('input', () => {
-  const query = searchInput.value.toLowerCase();
-
-  productCards.forEach(card => {
-    const name = card.dataset.name.toLowerCase();
-    const desc = card.dataset.desc.toLowerCase();
-
-    const match = name.includes(query) || desc.includes(query);
-    card.style.display = match ? 'block' : 'none';
-  });
-});
-
-/* ↕️ SORT */
-sortSelect.addEventListener('change', () => {
-  let sortedCards = [...productCards];
-
-  if (sortSelect.value === 'name-asc') {
-    sortedCards.sort((a, b) =>
-      a.dataset.name.localeCompare(b.dataset.name)
-    );
   }
 
-  if (sortSelect.value === 'name-desc') {
-    sortedCards.sort((a, b) =>
-      b.dataset.name.localeCompare(a.dataset.name)
-    );
+  /* =========================
+     SORT
+  ========================= */
+  const sortSelect = document.getElementById("productSort");
+  const productGrid = document.querySelector(".product-grid");
+
+  if (sortSelect && productGrid) {
+    sortSelect.addEventListener("change", () => {
+      const sorted = [...productCards];
+
+      if (sortSelect.value === "name-asc") {
+        sorted.sort((a, b) =>
+          a.dataset.name.localeCompare(b.dataset.name)
+        );
+      }
+
+      if (sortSelect.value === "name-desc") {
+        sorted.sort((a, b) =>
+          b.dataset.name.localeCompare(a.dataset.name)
+        );
+      }
+
+      productGrid.innerHTML = "";
+      sorted.forEach(card => productGrid.appendChild(card));
+    });
   }
 
-  // Reset grid
-  productGrid.innerHTML = '';
-  sortedCards.forEach(card => productGrid.appendChild(card));
-});
-const emptyState = document.getElementById('emptyState');
+  /* =========================
+     MODAL + CAROUSEL + WHATSAPP
+  ========================= */
+  const modal = document.getElementById("productModal");
+  const modalImg = document.getElementById("modalImg");
+  const modalTitle = document.getElementById("modalTitle");
+  const whatsappBtn = document.getElementById("whatsappBtn");
+  const closeBtn = document.querySelector(".close-modal");
+  const prevBtn = document.querySelector(".prev");
+  const nextBtn = document.querySelector(".next");
 
-searchInput.addEventListener('input', () => {
-  const query = searchInput.value.toLowerCase();
-  let visibleCount = 0;
+  const phone = "2348028367079";
+  let images = [];
+  let index = 0;
+  let productName = "";
 
-  productCards.forEach(card => {
-    const match =
-      card.dataset.name.toLowerCase().includes(query) ||
-      card.dataset.desc.toLowerCase().includes(query);
+  document.querySelectorAll(".quick-view-btn").forEach(btn => {
+    btn.addEventListener("click", e => {
+      const card = e.target.closest(".product-card");
 
-    card.style.display = match ? 'block' : 'none';
-    if (match) visibleCount++;
+      images = card.dataset.images.split(",");
+      index = 0;
+      productName = card.dataset.name;
+
+      modalImg.src = images[index];
+      modalTitle.textContent = productName;
+
+      whatsappBtn.onclick = () => {
+        const msg = `Hello Glirk Furniture 👋
+
+I’d like to request a quote for:
+Product: ${productName}
+Image: ${location.origin}/${images[index]}`;
+
+        window.open(
+          `https://wa.me/${phone}?text=${encodeURIComponent(msg)}`,
+          "_blank"
+        );
+      };
+
+      modal.classList.add("show");
+    });
   });
 
-  emptyState.hidden = visibleCount !== 0;
+  if (prevBtn) {
+    prevBtn.onclick = () => {
+      index = (index - 1 + images.length) % images.length;
+      modalImg.src = images[index];
+    };
+  }
+
+  if (nextBtn) {
+    nextBtn.onclick = () => {
+      index = (index + 1) % images.length;
+      modalImg.src = images[index];
+    };
+  }
+
+  if (closeBtn) {
+    closeBtn.onclick = () => modal.classList.remove("show");
+  }
+
+  if (modal) {
+    modal.onclick = e => {
+      if (e.target === modal) modal.classList.remove("show");
+    };
+  }
+
 });
